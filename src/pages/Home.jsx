@@ -33,6 +33,8 @@ const Home = () => {
         MySwal.fire({
             title: 'Task Created',
             icon: "success"
+        }).then(function () {
+            window.location.reload()
         })
         setName('')
         setStatus('')
@@ -49,6 +51,8 @@ const Home = () => {
         MySwal.fire({
             title: `${name} is Deleted`,
             icon: "success"
+        }).then(function () {
+            window.location.reload()
         })
     }
     useEffect(() => {
@@ -65,6 +69,8 @@ const Home = () => {
             MySwal.fire({
                 title: `${name} Task Completed`,
                 icon: "success"
+            }).then(function () {
+                window.location.reload()
             })
 
         } catch (error) {
@@ -104,7 +110,7 @@ const Home = () => {
                                 <td className='border border-slate-300 p-3 text-center'>{name}</td>
                                 <td className='border border-slate-300 p-3 text-center'>{moment(createdAt).format('ll')}</td>
                                 <td className={`border border-slate-300 p-3 text-center text-white font-medium py-1 px-2 cursor-pointer ${status === 'true' ? 'bg-green-700  cursor-not-allowed' : 'bg-red-700'}`}
-                                    onClick={() => setToComplete(_id, name)}> <button className={`${status === 'true' ? 'cursor-not-allowed' : 'cursor-pointer'}`}>{status === 'true' ? 'Completed' : 'Not Complete'}</button></td>
+                                    onClick={() => setToComplete(_id, name)}> <button className={`${status === 'true' ? 'cursor-not-allowed' : 'cursor-pointer'}`}>{status === 'true' ? 'Completed' : 'Mark as complete'}</button></td>
                                 <td title='delete' className='border border-slate-300 p-3 text-center'>
                                     <button className='hover:text-red-600 transition-all' onClick={() => deleteTask(_id, name)}><MdDelete /></button>
                                 </td>
