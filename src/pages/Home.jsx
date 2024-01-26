@@ -10,6 +10,8 @@ const Home = () => {
     const [tasks, setTasks] = useState([])
     const [name, setName] = useState('')
     const [status, setStatus] = useState('')
+    const [desc, setDesc] = useState('')
+    const [due, setDue] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const MySwal = withReactContent(Swal)
@@ -32,7 +34,9 @@ const Home = () => {
             setError('')
             const { data } = await axios.post('http://localhost:5000/create', {
                 name,
-                status
+                status,
+                desc,
+                dueTask: due
             })
             MySwal.fire({
                 title: 'Task Created',
@@ -109,19 +113,23 @@ const Home = () => {
                 <thead>
                     <tr>
                         <th className='border border-slate-300 p-3 text-center'>Task Name</th>
+                        <th className='border border-slate-300 p-3 text-center'>Description</th>
                         <th className='border border-slate-300 p-3 text-center'>Created At</th>
                         <th className='border border-slate-300 p-3 text-center'>Status</th>
+                        <th className='border border-slate-300 p-3 text-center'>Due date</th>
                         <th className='border border-slate-300 p-3 text-center'>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        tasks.map(({ _id, name, createdAt, status }) => (
+                        tasks.map(({ _id, name, createdAt, status, desc, dueTask }) => (
                             <tr key={_id} className='space-y-2 py-5'>
                                 <td className='border border-slate-300 p-3 text-center'>{name}</td>
+                                <td className='border border-slate-300 p-3 text-center'>{desc}</td>
                                 <td className='border border-slate-300 p-3 text-center'>{moment(createdAt).format('ll')}</td>
                                 <td className={`border border-slate-300 p-3 text-center text-white font-medium py-1 px-2 cursor-pointer ${status === 'true' ? 'bg-green-700  cursor-not-allowed' : 'bg-red-700'}`}
                                     onClick={() => setToComplete(_id, name)}> <button className={`${status === 'true' ? 'cursor-not-allowed' : 'cursor-pointer'}`}>{status === 'true' ? 'Completed' : 'Mark as complete'}</button></td>
+                                <td className='border border-slate-300 p-3 text-center'>{dueTask}</td>
                                 <td title='delete' className='border border-slate-300 p-3 text-center'>
                                     <button className='hover:text-red-600 transition-all' onClick={() => deleteTask(_id, name)}><MdDelete /></button>
                                 </td>
@@ -136,6 +144,14 @@ const Home = () => {
                     <div className='flex flex-col justify-center'>
                         <label htmlFor="">Task Name</label>
                         <input type="text" placeholder='Put Task Name' className='border p-1 rounded-md' value={name} onChange={(e) => setName(e.target.value)} />
+                    </div>
+                    <div className='flex flex-col justify-center'>
+                        <label htmlFor="">Description</label>
+                        <input type="text" placeholder='Description' className='border p-1 rounded-md' value={desc} onChange={(e) => setDesc(e.target.value)} />
+                    </div>
+                    <div className='flex flex-col justify-center'>
+                        <label htmlFor="">Due date</label>
+                        <input type="text" placeholder='Date' className='border p-1 rounded-md' value={due} onChange={(e) => setDue(e.target.value)} />
                     </div>
                     <div className='flex flex-col justify-center'>
                         <label htmlFor="">Status</label>
