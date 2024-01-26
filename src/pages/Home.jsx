@@ -10,6 +10,8 @@ const Home = () => {
     const [tasks, setTasks] = useState([])
     const [name, setName] = useState('')
     const [status, setStatus] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
     const MySwal = withReactContent(Swal)
 
 
@@ -25,19 +27,28 @@ const Home = () => {
 
     const postTask = async (e) => {
         e.preventDefault()
-        console.log(status);
-        const { data } = await axios.post('http://localhost:5000/create', {
-            name,
-            status
-        })
-        MySwal.fire({
-            title: 'Task Created',
-            icon: "success"
-        }).then(function () {
-            window.location.reload()
-        })
-        setName('')
-        setStatus('')
+        try {
+            setLoading(true)
+            setError('')
+            const { data } = await axios.post('http://localhost:5000/create', {
+                name,
+                status
+            })
+            MySwal.fire({
+                title: 'Task Created',
+                icon: "success"
+            })
+            setName('')
+            setStatus('')
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            setError(Object.values(error.response.data) + ".")
+            MySwal.fire({
+                title: Object.values(error.response.data) + ".",
+                icon: "error"
+            })
+        }
     }
 
     useEffect(() => {
