@@ -20,7 +20,7 @@ const Edit = ({ currentId }) => {
         }
         console.log(newFormData);
         try {
-            await axios.patch(`http://localhost:5000/update/${currentId}`, newFormData)
+            await axios.patch(`https://chaintech-be.vercel.app/update/${currentId}`, newFormData)
             MySwal.fire({
                 title: `Updated successfully`,
                 icon: "success"

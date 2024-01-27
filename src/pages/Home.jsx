@@ -27,7 +27,7 @@ const Home = () => {
     // GET all tasks
     useEffect(() => {
         const getAllTasks = async () => {
-            const { data } = await axios.get('http://localhost:5000/')
+            const { data } = await axios.get('https://chaintech-be.vercel.app/')
             setTasks(data.data)
         }
         getAllTasks()
@@ -40,7 +40,7 @@ const Home = () => {
         try {
             setLoading(true)
             setError('')
-            const { data } = await axios.post('http://localhost:5000/create', {
+            const { data } = await axios.post('https://chaintech-be.vercel.app/create', {
                 name,
                 status,
                 desc,
@@ -74,8 +74,7 @@ const Home = () => {
 
     // DELETE a task
     const deleteTask = async (id, name) => {
-        console.log(id);
-        const { data } = await axios.delete(`http://localhost:5000/${id}`)
+        const { data } = await axios.delete(`https://chaintech-be.vercel.app/${id}`)
         MySwal.fire({
             title: `${name} is Deleted`,
             icon: "success"
@@ -90,7 +89,7 @@ const Home = () => {
 
 
     const getSingleTask = async (id) => {
-        const { data } = await axios.get(`http://localhost:5000/${id}`)
+        const { data } = await axios.get(`https://chaintech-be.vercel.app/${id}`)
         setCurrentId(id);
         setShowModal(!showModal)
     }
@@ -107,7 +106,7 @@ const Home = () => {
             status: true
         }
         try {
-            await axios.patch(`http://localhost:5000/update/${id}`, newFormData)
+            await axios.patch(`https://chaintech-be.vercel.app/update/${id}`, newFormData)
             MySwal.fire({
                 title: `${name} Task Completed`,
                 icon: "success"
