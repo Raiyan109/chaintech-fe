@@ -3,21 +3,28 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import axios from 'axios';
 import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 import { TfiReload } from "react-icons/tfi";
 
 import moment from 'moment';
+
+import Edit from '../components/Edit';
 const Home = () => {
     const [tasks, setTasks] = useState([])
     const [name, setName] = useState('')
     const [status, setStatus] = useState('')
     const [desc, setDesc] = useState('')
     const [due, setDue] = useState('')
+    const [currentId, setCurrentId] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+
+    const [showModal, setShowModal] = useState(false)
     const MySwal = withReactContent(Swal)
 
 
 
+    // GET all tasks
     useEffect(() => {
         const getAllTasks = async () => {
             const { data } = await axios.get('http://localhost:5000/')
@@ -27,8 +34,9 @@ const Home = () => {
     }, [])
 
 
-    const postTask = async (e) => {
-        e.preventDefault()
+    // POST new task
+    const postTask = async () => {
+
         try {
             setLoading(true)
             setError('')
@@ -41,6 +49,8 @@ const Home = () => {
             MySwal.fire({
                 title: 'Task Created',
                 icon: "success"
+            }).then(function () {
+                window.location.reload()
             })
             setName('')
             setStatus('')
@@ -55,11 +65,14 @@ const Home = () => {
         }
     }
 
-    useEffect(() => {
+    const handlePost = (e) => {
+        e.preventDefault()
         postTask()
-    }, [])
+    }
 
 
+
+    // DELETE a task
     const deleteTask = async (id, name) => {
         console.log(id);
         const { data } = await axios.delete(`http://localhost:5000/${id}`)
@@ -74,6 +87,20 @@ const Home = () => {
         deleteTask()
     }, [])
 
+
+
+    const getSingleTask = async (id) => {
+        const { data } = await axios.get(`http://localhost:5000/${id}`)
+        setCurrentId(id);
+        setShowModal(!showModal)
+    }
+
+    useEffect(() => {
+        getSingleTask()
+    }, [])
+
+
+    // Mark as completed
     const setToComplete = async (id, name) => {
         const newFormData = {
             // name: name,
@@ -130,17 +157,20 @@ const Home = () => {
                                 <td className={`border border-slate-300 p-3 text-center text-white font-medium py-1 px-2 cursor-pointer ${status === 'true' ? 'bg-green-700  cursor-not-allowed' : 'bg-red-700'}`}
                                     onClick={() => setToComplete(_id, name)}> <button className={`${status === 'true' ? 'cursor-not-allowed' : 'cursor-pointer'}`}>{status === 'true' ? 'Completed' : 'Mark as complete'}</button></td>
                                 <td className='border border-slate-300 p-3 text-center'>{dueTask}</td>
-                                <td title='delete' className='border border-slate-300 p-3 text-center'>
-                                    <button className='hover:text-red-600 transition-all' onClick={() => deleteTask(_id, name)}><MdDelete /></button>
+                                <td className='border border-slate-300 p-3 text-center space-x-2'>
+                                    <button title='delete' className='hover:text-red-600 transition-all' onClick={() => deleteTask(_id, name)}><MdDelete /></button>
+                                    <button title='edit' className='hover:text-blue-600 transition-all' onClick={() => getSingleTask(_id)}><FaEdit /></button>
                                 </td>
                             </tr>
                         ))
                     }
                 </tbody>
             </table>
+            {showModal && <Edit currentId={currentId} />}
+
 
             <div className='flex justify-center items-center mt-10 border p-10'>
-                <form onSubmit={postTask}>
+                <form onSubmit={handlePost}>
                     <div className='flex flex-col justify-center'>
                         <label htmlFor="">Task Name</label>
                         <input type="text" placeholder='Put Task Name' className='border p-1 rounded-md' value={name} onChange={(e) => setName(e.target.value)} />
