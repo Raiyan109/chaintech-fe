@@ -20,7 +20,7 @@ const Edit = ({ currentId }) => {
         }
         console.log(newFormData);
         try {
-            await axios.put(`http://localhost:5000/update/${currentId}`, newFormData)
+            await axios.patch(`http://localhost:5000/update/${currentId}`, newFormData)
             MySwal.fire({
                 title: `Updated successfully`,
                 icon: "success"
@@ -61,7 +61,7 @@ const Edit = ({ currentId }) => {
                                 />
                             </td>
                             <td className='border border-slate-300 p-3 text-center'>
-                                <input type="text" placeholder='Due Date' className='border-none outline-none focus:border-gray-200'
+                                <input type="date" placeholder='Due Date' className='border-none outline-none focus:border-gray-200'
                                     value={updateDueTask}
                                     onChange={(e) => setUpdateDueTask(e.target.value)}
                                 />

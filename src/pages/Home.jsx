@@ -107,7 +107,7 @@ const Home = () => {
             status: true
         }
         try {
-            await axios.put(`http://localhost:5000/update/${id}`, newFormData)
+            await axios.patch(`http://localhost:5000/update/${id}`, newFormData)
             MySwal.fire({
                 title: `${name} Task Completed`,
                 icon: "success"
@@ -156,7 +156,7 @@ const Home = () => {
                                 <td className='border border-slate-300 p-3 text-center'>{moment(createdAt).format('ll')}</td>
                                 <td className={`border border-slate-300 p-3 text-center text-white font-medium py-1 px-2 cursor-pointer ${status === 'true' ? 'bg-green-700  cursor-not-allowed' : 'bg-red-700'}`}
                                     onClick={() => setToComplete(_id, name)}> <button className={`${status === 'true' ? 'cursor-not-allowed' : 'cursor-pointer'}`}>{status === 'true' ? 'Completed' : 'Mark as complete'}</button></td>
-                                <td className='border border-slate-300 p-3 text-center'>{dueTask}</td>
+                                <td className='border border-slate-300 p-3 text-center'>{moment(dueTask).format('ll')}</td>
                                 <td className='border border-slate-300 p-3 text-center space-x-2'>
                                     <button title='delete' className='hover:text-red-600 transition-all' onClick={() => deleteTask(_id, name)}><MdDelete /></button>
                                     <button title='edit' className='hover:text-blue-600 transition-all' onClick={() => getSingleTask(_id)}><FaEdit /></button>
@@ -181,7 +181,7 @@ const Home = () => {
                     </div>
                     <div className='flex flex-col justify-center'>
                         <label htmlFor="">Due date</label>
-                        <input type="text" placeholder='Date' className='border p-1 rounded-md' value={due} onChange={(e) => setDue(e.target.value)} />
+                        <input type="date" placeholder='Date' className='border p-1 rounded-md' value={due} onChange={(e) => setDue(e.target.value)} />
                     </div>
                     <div className='flex flex-col justify-center'>
                         <label htmlFor="">Status</label>
