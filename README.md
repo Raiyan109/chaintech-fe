@@ -2,7 +2,7 @@
 
 This To-Do List application allows users to manage their tasks efficiently. Users can create, view, edit, mark as complete, and delete tasks. The application is built with simplicity and ease of use in mind, providing a seamless task management experience.
 
-[Live Link](https://mellow-paprenjak-a90c80.netlify.app/)
+[Live Link](https://chaintech-fe.vercel.app/)
 
 ## Features
 - Task Management: Users can create tasks with a title and description, view a list of all tasks, mark tasks as completed, edit task details, and delete tasks.
